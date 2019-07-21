@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script>
+    class User {
+      constructor() {}
+    }
+
+    // Create payload -- redundant everywhere, now in neat make() function
+    let make = function (payload) {
+      return {
+        method: 'post',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      };
+    }
+    /* Create user in database
+           payload = {
+           username   : "felix",
+           email      : "felix@thecat.net",
+           first_name : "Felix",
+           last_name  : "Felicis",
+           password   : "Password123",
+           type       : "normal" } */
+    User.create = function (payload) {
+      fetch("/api/user/register", make(payload))
+        .then(promise => promise.json())
+        .then(json => {
+          if (json.success)
+            console.log(`User <${payload.username}> <${payload.email_address}> was successfully registered.`);
+          else
+            console.log(`User with email address <${payload.email_address}> already exists!`);
+        });
+    }
+  </script>
+</head>
+
+<body>
+  <input type="text" id="un" style="width: 90px" /><input type="text" id="email_address" />
+
+  <input id="user_button" type="button"
+    onclick="let payload = { 'email_address': window.email_address.value, 'username': window.un.value, 'password': 'password'}; User.create( payload )"
+    value="register user" /><br />
+</body>
+
+</html>
