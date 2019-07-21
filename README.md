@@ -1,5 +1,6 @@
 ## Change The Environment Variables
-Change these to your host IP, database, user, password, and database. Or add your own `.env` file.
+
+Change these to your host IP, database user, password, and database. Or add your own `.env` file.
   ```javascript
   // line 9, api.js
   this.connection = mysql.createConnection({
