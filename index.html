@@ -30,6 +30,8 @@
            password   : "Password123",
            type       : "normal" } */
     User.create = function (payload) {
+      console.log("payload: ", payload);
+      console.log("stringify ", JSON.stringify(payload));
       fetch("/api/user/register", make(payload))
         .then(promise => promise.json())
         .then(json => {

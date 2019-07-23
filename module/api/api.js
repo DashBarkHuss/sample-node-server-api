@@ -83,18 +83,19 @@ class API {
   constructor() {}
   static exec(request, response) {
     console.log("API.exec(), parts = ", API.parts);
-    if (request.method = 'POST') {
+    if (request.method == 'POST') {
       request.url[0] === '/'? request.url = request.url.substring(1, request.url.length) : null;
       request.parts = request.url.split('/');
       request.chunks = []; 
+      
+      request.on('data', segment => {
+        if (segment.length > 1e6) // 413 = "request entity too large" 
+        response.writeHead(413, {'Content-Type': 'text/plain'}).end();
+        else
+          request.chunks.push(segment);
+      });
     }
     // Start reading post data chunks
-    request.on('data', segment => {
-      if (segment.length > 1e6) // 413 = "request entity too large" 
-      response.writeHead(413, {'Content-Type': 'text/plain'}).end();
-      else
-        request.chunks.push(segment);
-    });
     request.on('end', ()=> {
       API.parts = request.parts;
       if (identify("user", "register"))
